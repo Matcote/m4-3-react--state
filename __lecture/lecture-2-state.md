@@ -129,6 +129,11 @@ function SomeComponent() {
 
   return <button onClick={() => setCount(count + 1)}>One, Two, Three!</button>;
 }
+
+// 10
+// 11
+// 12
+// 13
 ```
 
 ---
@@ -143,6 +148,8 @@ function SomeComponent() {
 
   return <input value={thing} onChange={(ev) => setThing(ev.target.value)} />;
 }
+//Hi
+//!
 ```
 
 ---
@@ -199,17 +206,18 @@ What happens when you want to share state between components?
 
 ```jsx
 const App = () => {
+  const [searchTerm, setSearchTerm] = React.useState("");
   return (
     <>
-      <SearchInput />
-      <SearchResults />
+      <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <SearchResults searchTerm={searchTerm} />
     </>
   );
 };
 
-const SearchInput = () => {
-  const [searchTerm, setSearchTerm] = React.useState("");
-
+const SearchInput = ({ searchTerm, setSearchTerm }) => {
+  //const [searchTerm, setSearchTerm] = React.useState("");
+  //moved to App
   return (
     <input
       type="text"
@@ -221,9 +229,7 @@ const SearchInput = () => {
   );
 };
 
-const SearchResults = () => {
-  // ??
-};
+const SearchResults = ({ searchTerm }) => {};
 ```
 
 ---
@@ -239,9 +245,7 @@ Lift state up in the following examples
 ---
 
 ```jsx live=true
-const Counter = () => {
-  const [count, setCount] = React.useState(0);
-
+const Counter = ({ count, setCount }) => {
   return (
     <>
       <button onClick={() => setCount(count + 1)}>Increment</button>
@@ -250,10 +254,11 @@ const Counter = () => {
 };
 
 const App = () => {
+  const [count, setCount] = React.useState(0);
   return (
     <>
-      The current count is: ???
-      <Counter />
+      The current count is: {count}
+      <Counter count={count} setCount={setCount} />
     </>
   );
 };
@@ -264,9 +269,7 @@ render(<App />);
 ---
 
 ```jsx live=true
-const FavouriteFood = () => {
-  const [food, setFood] = React.useState("");
-
+const FavouriteFood = ({ food, setFood }) => {
   return (
     <>
       <label>
@@ -294,10 +297,11 @@ const FavouriteFood = () => {
 };
 
 const App = () => {
+  const [food, setFood] = React.useState("");
   return (
     <>
-      <p>My favourite food is: ???</p>
-      <FavouriteFood />
+      <p>My favourite food is: {food}</p>
+      <FavouriteFood food={food} setFood={setFood} />
     </>
   );
 };
