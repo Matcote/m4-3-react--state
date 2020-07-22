@@ -24,7 +24,12 @@ const Suggestion = styled.li`
 
 const Typeahead = ({ suggestions, handleSelect }) => {
   const [search, setSearch] = React.useState("");
-  if (search.length > 1) {
+  if (
+    search.length > 1 &&
+    suggestions.filter((obj) => {
+      return obj.title.toLowerCase().includes(search.toLowerCase());
+    }).length > 0
+  ) {
     return (
       <>
         <Input
