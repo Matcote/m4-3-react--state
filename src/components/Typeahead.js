@@ -14,15 +14,25 @@ const Input = styled.input`
   border: 1px solid grey;
   margin: 5px;
 `;
-
 const Suggestion = styled.li`
   padding: 5px;
+  font-size: large;
   &:hover {
     background-color: lightyellow;
   }
 `;
+const Prediction = styled.span`
+  font-weight: bold;
+`;
+const Categorie = styled.span`
+  font-size: medium;
+  font-style: italic;
+  span {
+    color: purple;
+  }
+`;
 
-const Typeahead = ({ suggestions, handleSelect }) => {
+const Typeahead = ({ suggestions, handleSelect, categories }) => {
   const [search, setSearch] = React.useState("");
   if (
     search.length > 1 &&
@@ -57,7 +67,33 @@ const Typeahead = ({ suggestions, handleSelect }) => {
                   key={suggestion.id}
                   onClick={() => handleSelect(suggestion.title)}
                 >
-                  {suggestion.title}
+                  <Prediction>
+                    {suggestion.title.slice(
+                      0,
+                      suggestion.title
+                        .toLowerCase()
+                        .indexOf(search.toLowerCase())
+                    )}
+                  </Prediction>
+                  {suggestion.title.slice(
+                    suggestion.title
+                      .toLowerCase()
+                      .indexOf(search.toLowerCase()),
+                    suggestion.title
+                      .toLowerCase()
+                      .indexOf(search.toLowerCase()) + search.length
+                  )}
+                  <Prediction>
+                    {suggestion.title.slice(
+                      suggestion.title
+                        .toLowerCase()
+                        .indexOf(search.toLowerCase()) + search.length,
+                      suggestion.title.length
+                    )}{" "}
+                  </Prediction>
+                  <Categorie>
+                    in <span>{categories[suggestion.categoryId].name}</span>
+                  </Categorie>
                 </Suggestion>
               );
             })}
