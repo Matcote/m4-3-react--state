@@ -6,11 +6,14 @@ import Typeahead from "./Typeahead";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
+  width: 50%;
+  margin: 30px auto;
+  vertical-align: center;
+  ul {
+    padding: 5px;
+    border-radius: 4px;
+    box-shadow: 0px 4px 9px 0px rgba(0, 0, 0, 0.75);
+  }
 `;
 
 const App = (props) => {

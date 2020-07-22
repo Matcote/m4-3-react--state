@@ -15,8 +15,51 @@ const Input = styled.input`
   margin: 5px;
 `;
 
+const Suggestion = styled.li`
+  padding: 5px;
+  &:hover {
+    background-color: lightyellow;
+  }
+`;
+
 const Typeahead = ({ suggestions, handleSelect }) => {
   const [search, setSearch] = React.useState("");
+  if (search.length > 1) {
+    return (
+      <>
+        <Input
+          type="text"
+          name="searchBox"
+          value={search}
+          onChange={(ev) => {
+            setSearch(ev.target.value);
+          }}
+          onKeyDown={(ev) => {
+            if (ev.key === "Enter") {
+              return search;
+            }
+          }}
+        />
+        <Button onClick={() => setSearch("")}>Clear</Button>
+        <ul>
+          {suggestions
+            .filter((obj) => {
+              return obj.title.toLowerCase().includes(search.toLowerCase());
+            })
+            .map((suggestion) => {
+              return (
+                <Suggestion
+                  key={suggestion.id}
+                  onClick={() => handleSelect(suggestion.title)}
+                >
+                  {suggestion.title}
+                </Suggestion>
+              );
+            })}
+        </ul>
+      </>
+    );
+  }
   return (
     <>
       <Input
