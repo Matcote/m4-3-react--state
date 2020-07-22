@@ -34,6 +34,9 @@ const Categorie = styled.span`
 
 const Typeahead = ({ suggestions, handleSelect, categories }) => {
   const [search, setSearch] = React.useState("");
+  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = React.useState(
+    0
+  );
   if (
     search.length > 1 &&
     suggestions.filter((obj) => {
@@ -50,8 +53,19 @@ const Typeahead = ({ suggestions, handleSelect, categories }) => {
             setSearch(ev.target.value);
           }}
           onKeyDown={(ev) => {
-            if (ev.key === "Enter") {
-              return search;
+            switch (ev.key) {
+              case "Enter": {
+                handleSelect(ev.target.value);
+                return;
+              }
+              case "ArrowUp": {
+                setSelectedSuggestionIndex(selectedSuggestionIndex - 1);
+                return;
+              }
+              case "ArrowDown": {
+                setSelectedSuggestionIndex(selectedSuggestionIndex + 1);
+                return;
+              }
             }
           }}
         />
@@ -61,11 +75,19 @@ const Typeahead = ({ suggestions, handleSelect, categories }) => {
             .filter((obj) => {
               return obj.title.toLowerCase().includes(search.toLowerCase());
             })
-            .map((suggestion) => {
+            .map((suggestion, index) => {
+              const isSelected =
+                index === selectedSuggestionIndex ? true : false;
               return (
                 <Suggestion
                   key={suggestion.id}
                   onClick={() => handleSelect(suggestion.title)}
+                  style={{
+                    background: isSelected
+                      ? "hsla(50deg, 100%, 80%, 0.25)"
+                      : "transparent",
+                  }}
+                  onMouseEnter={() => setSelectedSuggestionIndex(index)}
                 >
                   <Prediction>
                     {suggestion.title.slice(
